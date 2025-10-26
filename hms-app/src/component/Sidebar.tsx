@@ -1,4 +1,4 @@
-import {Bell, Home, LogIn, User} from "lucide-react";
+import {Home, LogOut, File, User, Folder, IdCardLanyard} from "lucide-react";
 import {NavLink, useLocation } from "react-router-dom";
 import './css/Sidebar.css';
 
@@ -9,10 +9,10 @@ export const Sidebar = () => {
     const menuItems = [
         { icon: <Home size={18} />, label: "Oddziały", path: "/department" },
         { icon: <User size={18} />, label: "Pacjenci", path: "/patient" },
-        { icon: <User size={18} />, label: "Personel", path: "/staff" },
-        { icon: <Bell size={18} />, label: "Historia leczenia", path: "/history" },
-        { icon: <User size={18} />, label: "Dokumenty", path: "/documents" },
-        { icon: <LogIn size={18} />, label: "Sign out", path: "/logout" },
+        { icon: <IdCardLanyard size={18} />, label: "Personel", path: "/staff" },
+        { icon: <Folder size={18} />, label: "Historia leczenia", path: "/history" },
+        { icon: <File size={18} />, label: "Dokumenty", path: "/documents" },
+        { icon: <LogOut size={18} />, label: "Sign out", path: "/logout" },
     ];
 
     return (
