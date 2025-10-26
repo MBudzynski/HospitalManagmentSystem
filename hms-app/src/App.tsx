@@ -5,11 +5,21 @@ import {HelmetProvider} from "react-helmet-async";
 import {Provider} from "react-redux";
 import {store} from "./store";
 import HmsMainPage from "./page/HmsMainPage.tsx";
+import DepartmentManagePage from "./page/DepartmentManagePage.tsx";
+import PatientManagePage from "./page/PatientManagePage.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <HmsMainPage/>,
+    },
+    {
+        path: "/department",
+        element: <DepartmentManagePage/>,
+    },
+    {
+        path: "/patient",
+        element: <PatientManagePage/>,
     }
 ]);
 

@@ -1,0 +1,75 @@
+.app-root { display: flex; min-height: 95vh; position: relative; }
+.header h1 { font-size: 2rem; margin-bottom: 8px; }
+.subtitle { color: #555; margin-bottom: 24px; }
+
+.sidebar {
+    width: 300px;
+    background: linear-gradient(180deg, #0D47A1, #1565C0);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 0;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    min-height: 95vh;
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    width: 100%;
+}
+
+.sidebar nav li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    min-width: 260px;
+    cursor: pointer;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+}
+
+.sidebar nav li:hover {
+    background: rgba(255,255,255,0.1);
+    padding-left: 40px;
+}
+
+.sidebar-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar nav li.active {
+    background: rgba(255,255,255,0.2);
+    font-weight: 600;
+}
+
+.sidebar nav span {
+    font-size: 1rem;
+}
+
+.app-graphic {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 160px;
+    height: 160px;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar { width: 70px; }
+    .sidebar nav span { display: none; }
+    .main-content { padding: 24px; }
+}
