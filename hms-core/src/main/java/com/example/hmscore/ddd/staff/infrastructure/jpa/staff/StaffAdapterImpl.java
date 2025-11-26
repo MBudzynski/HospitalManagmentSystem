@@ -1,4 +1,4 @@
-package com.example.hmscore.ddd.staff.infrastructure.jpa;
+package com.example.hmscore.ddd.staff.infrastructure.jpa.staff;
 
 import com.example.hmscore.ddd.staff.domain.StaffAdapter;
 import lombok.RequiredArgsConstructor;

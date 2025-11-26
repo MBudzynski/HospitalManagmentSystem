@@ -13,6 +13,7 @@
     box-shadow: 4px 0 10px rgba(0,0,0,0.08);
     border-radius: 16px;
     min-height: 95vh;
+    max-height: 95vh;
 }
 
 .logo {

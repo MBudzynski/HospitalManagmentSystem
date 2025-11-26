@@ -5,3 +5,86 @@ body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neu
 .app-root { display: flex; min-height: 95vh; position: relative; }
 .header h1 { font-size: 2rem; margin-bottom: 8px; }
 .subtitle { color: #555; margin-bottom: 24px; }
+
+.department-page {
+    display: flex;
+    height: 90vh;
+}
+
+.department-page > :first-child {
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.search-bar button {
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.department-table-wrapper {
+    max-height: 300px;
+    min-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+.department-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.department-table th,
+.department-table td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.department-table tr:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.department-details {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.action-bar {
+    flex-shrink: 0;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-left: 1px solid #ccc;
+    background-color: #1565C0;
+}
+
+.action-bar button {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 8px;
+}
