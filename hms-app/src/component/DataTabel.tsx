@@ -1,0 +1,65 @@
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+
+interface TableProps<T> {
+    data: T[];
+    columns: (keyof T)[];
+    columnLabels?: { [key in keyof T]: string }; // opcjonalna mapa polskich nazw
+    onView?: (item: T) => void;
+    onDelete?: (item: T) => void;
+}
+
+export const DataTable = <T extends object>({
+                                                data,
+                                                columns,
+                                                columnLabels,
+                                                onView,
+                                                onDelete,
+                                            }: TableProps<T>) => {
+    return (
+        <Table striped bordered hover responsive>
+            <thead>
+            <tr>
+                {columns.map((col) => (
+                    <th key={String(col)}>
+                        {columnLabels ? columnLabels[col] : String(col).toUpperCase()}
+                    </th>
+                ))}
+                {(onView || onDelete) && <th>Akcje</th>}
+            </tr>
+            </thead>
+            <tbody>
+            {data.map((item, index) => (
+                <tr key={index}>
+                    {columns.map((col) => (
+                        <td key={String(col)}>{String(item[col])}</td>
+                    ))}
+                    {(onView || onDelete) && (
+                        <td>
+                            {onView && (
+                                <Button
+                                    variant="info"
+                                    size="sm"
+                                    className="me-2"
+                                    onClick={() => onView(item)}
+                                >
+                                    Szczegóły
+                                </Button>
+                            )}
+                            {onDelete && (
+                                <Button
+                                    variant="danger"
+                                    size="sm"
+                                    onClick={() => onDelete(item)}
+                                >
+                                    Usuń
+                                </Button>
+                            )}
+                        </td>
+                    )}
+                </tr>
+            ))}
+            </tbody>
+        </Table>
+    );
+};

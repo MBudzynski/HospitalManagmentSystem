@@ -3,7 +3,7 @@ import Sidebar from "../component/Sidebar.tsx";
 export const PatientManagePage = () => {
     return (
      <div>
-         <Sidebar/>
+         <Sidebar name="Pacjenci"/>
      </div>
     )
 }

@@ -1,17 +1,20 @@
-import './css/HmsMainPage.css';
 import Sidebar from "../component/Sidebar.tsx";
-import myImage from '../logo.png';
+import logo from '../logo.png';
 
 export const HmsMainPage = () => {
 
     return (
-        <div className="app-root">
-
-            <Sidebar />
-
-            <div className="app-graphic" aria-hidden>
-                <img src={myImage} alt="Logo" width={160} height={160}/>
-            </div>
+        <div
+            style={{
+                width: "98hv",
+                height: "92vh",
+                backgroundImage: `url(${logo})`,
+                backgroundSize: "100% 100%",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+            }}
+        >
+            <Sidebar name="Hospital Management System"></Sidebar>
         </div>
     )
 }

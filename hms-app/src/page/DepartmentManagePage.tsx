@@ -1,91 +1,149 @@
 import Sidebar from "../component/Sidebar.tsx";
 import './css/DepartmentManagePage.css'
-import { useState } from "react";
-
-interface Department {
-    code: string;
-    name: string;
-    description: string;
-}
-
-const mockDepartments: Department[] = [
-    { code: '001', name: 'Oddział A', description: 'Opis oddziału A' },
-    { code: '002', name: 'Oddział B', description: 'Opis oddziału B' },
-    { code: '003', name: 'Oddział C', description: 'Opis oddziału C' },
-];
+import {DataTable} from "../component/DataTabel.tsx";
+import type {DepartmentDTO} from "../dto/DepartmentDTO.tsx";
+import {DtoSearch} from "../component/Search.tsx";
+import Button from "react-bootstrap/Button";
 
 export const DepartmentManagePage = () => {
 
-    const [departments, setDepartments] = useState<Department[]>(mockDepartments);
-    const [selectedDept, setSelectedDept] = useState<Department | null>(null);
-    const [searchText, setSearchText] = useState('');
-
-    const handleSearch = () => {
-        const filtered = mockDepartments.filter(d =>
-            d.name.toLowerCase().includes(searchText.toLowerCase()) ||
-            d.code.includes(searchText)
-        );
-        setDepartments(filtered);
+    const dtoFields: (keyof DepartmentDTO)[] = ["departmentCode", "departmentName", "headOfDepartment"];
+    const departmentFieldLabels: { [key in keyof DepartmentDTO]: string } = {
+        departmentId: "ID działu",
+        departmentName: "Nazwa działu",
+        departmentCode: "Kod działu",
+        headOfDepartment: "Kierownik działu",
+        deputyHeadOfDepartment: "Zastępca kierownika",
+        staffsPhoneNumber: "Telefon personelu",
+        nursesPhoneNumber: "Telefon pielęgniarek",
+        headPhoneNumber: "Telefon kierownika",
     };
 
-    const handleSelect = (dept: Department) => {
-        setSelectedDept(dept);
+    const departments: DepartmentDTO[] = [
+        {
+            departmentId: 1,
+            departmentName: "Oddział Kardiologii",
+            departmentCode: 1,
+            headOfDepartment: "dr Janusz Kozak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        },
+        {
+            departmentId: 2,
+            departmentName: "Oddział Ortopedii",
+            departmentCode: 2,
+            headOfDepartment: "prof dr hab. Urszula Nowak",
+            deputyHeadOfDepartment: "2",
+            staffsPhoneNumber: "3",
+            nursesPhoneNumber: " 4",
+            headPhoneNumber: "5 "
+        }
+    ];
+
+    const handleSearch = async (field: keyof DepartmentDTO, value: string) => {
+        alert(`Szukanie po polu: ${field}` + ' value: ' + value);
     };
+
+    const handleDelete = (dept: DepartmentDTO) => {
+        alert(`Usuwanie działu: ${dept.departmentName}`);
+    };
+
+    const handleView = (dept: DepartmentDTO) => {
+        alert(`Szegóły działu: ${dept.departmentName}`);
+    }
+
+    const handleAdd = () => {
+        alert(`Dodaj oddział`);
+    }
 
     return (
-        <div className="department-page">
-            <Sidebar />
+        <div className="department-page" >
+            <Sidebar name="Oddziały"/>
 
-            <div className="main-content">
-
-                <div className="search-bar">
-                    <input
-                        type="text"
-                        placeholder="Wyszukaj oddział..."
-                        value={searchText}
-                        onChange={e => setSearchText(e.target.value)}
-                    />
-                    <button onClick={handleSearch}>Szukaj</button>
-                </div>
-
-                <div className="department-table-wrapper">
-                    <table className="department-table">
-                        <thead>
-                        <tr>
-                            <th>Kod</th>
-                            <th>Oddział</th>
-                            <th>Nazwa</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {departments.map((dept) => (
-                            <tr key={dept.code} onClick={() => handleSelect(dept)}>
-                                <td>{dept.code}</td>
-                                <td>{dept.name}</td>
-                                <td>{dept.description}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {selectedDept && (
-                    <div className="department-details">
-                        <h3>Szczegóły oddziału</h3>
-                        <p><strong>Kod:</strong> {selectedDept.code}</p>
-                        <p><strong>Nazwa:</strong> {selectedDept.name}</p>
-                        <p><strong>Opis:</strong> {selectedDept.description}</p>
-                    </div>
-                )}
+            <div style={{alignContent: "center", marginLeft: "30vh", marginTop: "4%", height: "100%"}}>
+                <DtoSearch<DepartmentDTO> dtoFields={dtoFields} fieldLabels={departmentFieldLabels} onSearch={handleSearch}/>
             </div>
 
-            <div className="action-bar">
-                <button>Dodaj</button>
-                <button>Edytuj</button>
-                <button>Usuń</button>
+            <div className="d-flex justify-content-end mb-3">
+                <Button variant="success" onClick={handleAdd} style={{ marginRight: "22vh", marginTop: "5vh" }}>
+                    Dodaj nowy oddział
+                </Button>
+            </div>
+
+            <div style={{maxWidth: "80%", margin: "5vh auto", overflowY: "auto", maxHeight: "40vh"}}>
+                <DataTable<DepartmentDTO>
+                    data={departments}
+                    columns={dtoFields}
+                    columnLabels={departmentFieldLabels}
+                    onDelete={handleDelete}
+                    onView={handleView}
+                />
             </div>
         </div>
     );
 }
+
 
 export default DepartmentManagePage;
