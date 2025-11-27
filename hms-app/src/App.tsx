@@ -7,6 +7,8 @@ import {store} from "./store";
 import HmsMainPage from "./page/HmsMainPage.tsx";
 import DepartmentManagePage from "./page/DepartmentManagePage.tsx";
 import PatientManagePage from "./page/PatientManagePage.tsx";
+import DepartmentAddPage from "./page/DepartmentAddPage.tsx";
+import RoomAddPage from "./page/RoomAddPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
         element: <DepartmentManagePage/>,
     },
     {
+        path: "/department/details",
+        element: <DepartmentAddPage/>,
+    },
+    {
+        path: "/department/details/rooms",
+        element: <RoomAddPage/>,
+    },
+    {
         path: "/patient",
         element: <PatientManagePage/>,
     }
@@ -27,7 +37,7 @@ function App() {
     const queryClient = new QueryClient();
 
     return (
-        <div className="App">
+        <div>
             <HelmetProvider>
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>

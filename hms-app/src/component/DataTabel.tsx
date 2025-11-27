@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 interface TableProps<T> {
     data: T[];
     columns: (keyof T)[];
-    columnLabels?: { [key in keyof T]: string }; // opcjonalna mapa polskich nazw
+    columnLabels?: { [key in keyof T]: string };
     onView?: (item: T) => void;
     onDelete?: (item: T) => void;
 }

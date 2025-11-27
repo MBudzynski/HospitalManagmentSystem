@@ -49,5 +49,6 @@
 }
 
 .my-navbar {
-    background-color: rgba(200, 200, 200, 0.2) !important;
+    border-radius: 8px; !important;
+    background-color: rgba(78, 77, 77, 0.2) !important;
 }

@@ -4,6 +4,7 @@ import com.example.hmscore.ddd.patient.infrastructure.jpa.patient_hospitalizatio
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class PatientEntity {
     private Long patientId;
     private String name;
     private String surname;
+    private String pesel;
+    private LocalDate birthDate;
     private String gender;
     private String phone;
     private String email;
