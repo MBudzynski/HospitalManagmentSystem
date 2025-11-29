@@ -3,7 +3,7 @@ import './css/DepartmentAddPage.css'
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {Button, Container, Form} from "react-bootstrap";
-import {type RoomDTO, roomFieldLabels} from "../dto/RoomDTO.tsx";
+import {type RoomDTO, roomFieldLabels, formRoomField} from "../dto/RoomDTO.tsx";
 import {FormFields} from "../component/FormFields.tsx";
 import {DataTable} from "../component/DataTabel.tsx";
 import {type PatientDTO, patientFieldLabels} from "../dto/PatientDTO.tsx";
@@ -18,10 +18,10 @@ export const DepartmentAddPage = () => {
     const isEdit = !!room;
 
     const [form, setForm] = useState<RoomDTO>({
-        roomId: room?.roomId ?? 0,
-        number: room?.number ?? "",
-        flat: room?.flat ?? 1,
-        bedNumber: room?.bedNumber ?? 1,
+        roomId: room?.roomId ?? undefined,
+        number: room?.number ?? undefined,
+        flat: room?.flat ?? undefined,
+        bedNumber: room?.bedNumber ?? undefined,
     });
 
     const patients: PatientDTO[] = [
@@ -76,6 +76,7 @@ export const DepartmentAddPage = () => {
                                 form={form}
                                 setForm={setForm}
                                 fieldLabels={roomFieldLabels}
+                                fields={formRoomField}
                             />
                         </Form>
 

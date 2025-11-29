@@ -4,78 +4,25 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {Form, Button, Container} from "react-bootstrap";
 import {type DepartmentDTO, departmentFieldLabels} from "../dto/DepartmentDTO.tsx";
-import {type RoomDTO, roomFieldLabels} from "../dto/RoomDTO.tsx";
-import {DataTable} from "../component/DataTabel.tsx";
 import {FormFields} from "../component/FormFields.tsx";
+import {DepartmentTabs} from "../component/DepartmentTabs.tsx";
 
 export const DepartmentAddPage = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-    const dtoFields: (keyof RoomDTO)[] = ["number", "flat", "bedNumber"];
     const dept = location.state as DepartmentDTO | undefined;
 
     const [form, setForm] = useState<DepartmentDTO>({
-        departmentId: dept?.departmentId ?? 0,
-        departmentName: dept?.departmentName ?? "",
-        departmentCode: dept?.departmentCode ?? 0,
-        headOfDepartment: dept?.headOfDepartment ?? "",
-        deputyHeadOfDepartment: dept?.deputyHeadOfDepartment ?? "",
-        staffsPhoneNumber: dept?.staffsPhoneNumber ?? "",
-        nursesPhoneNumber: dept?.nursesPhoneNumber ?? "",
-        headPhoneNumber: dept?.headPhoneNumber ?? "",
+        departmentId: dept?.departmentId ?? undefined,
+        departmentName: dept?.departmentName ?? undefined,
+        departmentCode: dept?.departmentCode ?? undefined,
+        headOfDepartment: dept?.headOfDepartment ?? undefined,
+        deputyHeadOfDepartment: dept?.deputyHeadOfDepartment ?? undefined,
+        staffsPhoneNumber: dept?.staffsPhoneNumber ?? undefined,
+        nursesPhoneNumber: dept?.nursesPhoneNumber ?? undefined,
+        headPhoneNumber: dept?.headPhoneNumber ?? undefined,
     });
-
-    const rooms: RoomDTO[] = [
-        {
-            roomId: 1,
-            number: "101",
-            flat: 1,
-            bedNumber: 2
-        },
-        {
-            roomId: 2,
-            number: "102",
-            flat: 1,
-            bedNumber: 1
-        },
-        {
-            roomId: 3,
-            number: "201",
-            flat: 2,
-            bedNumber: 3
-        },
-        {
-            roomId: 4,
-            number: "202",
-            flat: 2,
-            bedNumber: 2
-        },
-        {
-            roomId: 5,
-            number: "301",
-            flat: 3,
-            bedNumber: 1
-        },
-        {
-            roomId: 6,
-            number: "302",
-            flat: 3,
-            bedNumber: 2
-        },
-        {
-            roomId: 7,
-            number: "303",
-            flat: 3,
-            bedNumber: 3
-        },
-        {
-            roomId: 8,
-            number: "304",
-            flat: 3,
-            bedNumber: 1
-        }
-    ];
 
     const isEdit = !!dept;
 
@@ -87,21 +34,7 @@ export const DepartmentAddPage = () => {
         }
     };
 
-    const handleBack = () => {
-        console.log("Dodaję nowy oddział:", form);
-    };
-
-    const handleDelete = () => {
-        alert(`Usuwanie działu:`);
-    };
-
-    const handleViewRoom = (room: RoomDTO) => {
-        navigate("/department/details/rooms", { state: room });
-    };
-
-    const handleAddRoom = () => {
-        navigate("/department/details/rooms");
-    };
+    const handleBack = () => navigate(-1);
 
     return (
         <div  style={{height: "100%"}}>
@@ -122,23 +55,7 @@ export const DepartmentAddPage = () => {
                             borderRadius: "10px",
                             backgroundColor: "white"
                         }}>
-
-                            <div className="d-flex justify-content-end mb-3">
-                                <Button variant="success" onClick={handleAddRoom}
-                                        style={{marginRight: "22vh", marginTop: "5vh"}}>
-                                    Dodaj sale
-                                </Button>
-                            </div>
-
-                            <div style={{maxWidth: "80%", margin: "5vh auto", overflowY: "auto", maxHeight: "40vh"}}>
-                                <DataTable<RoomDTO>
-                                    data={rooms}
-                                    columns={dtoFields}
-                                    columnLabels={roomFieldLabels}
-                                    onDelete={handleDelete}
-                                    onView={handleViewRoom}
-                                />
-                            </div>
+                            <DepartmentTabs />
                         </div>
 
                         <div className="d-flex justify-content-end gap-3 mb-4 me-2">

@@ -9,6 +9,10 @@ import DepartmentManagePage from "./page/DepartmentManagePage.tsx";
 import PatientManagePage from "./page/PatientManagePage.tsx";
 import DepartmentAddPage from "./page/DepartmentAddPage.tsx";
 import RoomAddPage from "./page/RoomAddPage.tsx";
+import DepartmentAssignStaffPage from "./page/DepartmentAssignStaffPage.tsx";
+import StaffManagePage from "./page/StaffManagePage.tsx";
+import SatffAddPage from "./page/SatffAddPage.tsx";
+import PatientAddPage from "./page/PatientAddPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +30,26 @@ const router = createBrowserRouter([
     {
         path: "/department/details/rooms",
         element: <RoomAddPage/>,
+    },
+    {
+        path: "/department/details/staffs/add",
+        element: <DepartmentAssignStaffPage/>,
+    },
+    {
+        path: "/staffs",
+        element: <StaffManagePage/>,
+    },
+    {
+        path: "/staffs/details",
+        element: <SatffAddPage/>,
+    },
+    {
+        path: "/patients",
+        element: <PatientManagePage/>,
+    },
+    {
+        path: "/patients/details",
+        element: <PatientAddPage/>,
     },
     {
         path: "/patient",

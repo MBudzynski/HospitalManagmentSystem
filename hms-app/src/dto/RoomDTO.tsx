@@ -1,8 +1,8 @@
 export interface RoomDTO {
-    roomId: number;
-    number: string;
-    flat: number;
-    bedNumber: number;
+    roomId?: number;
+    number?: string;
+    flat?: number;
+    bedNumber?: number;
 }
 
 export const roomFieldLabels: { [key in keyof RoomDTO]: string } = {
@@ -11,3 +11,9 @@ export const roomFieldLabels: { [key in keyof RoomDTO]: string } = {
     flat: "Piętro",
     bedNumber: "Liczba łóżek"
 };
+
+export const formRoomField: (keyof RoomDTO)[] = [
+    "number",
+    "flat",
+    "bedNumber",
+];

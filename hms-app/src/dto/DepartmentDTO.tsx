@@ -1,12 +1,12 @@
 export interface DepartmentDTO {
-    departmentId: number;
-    departmentName: string;
-    departmentCode: number;
-    headOfDepartment: string;
-    deputyHeadOfDepartment: string;
-    staffsPhoneNumber: string;
-    nursesPhoneNumber: string;
-    headPhoneNumber: string;
+    departmentId?: number;
+    departmentName?: string;
+    departmentCode?: number;
+    headOfDepartment?: string;
+    deputyHeadOfDepartment?: string;
+    staffsPhoneNumber?: string;
+    nursesPhoneNumber?: string;
+    headPhoneNumber?: string;
 }
 
 export const departmentFieldLabels: { [key in keyof DepartmentDTO]: string } = {

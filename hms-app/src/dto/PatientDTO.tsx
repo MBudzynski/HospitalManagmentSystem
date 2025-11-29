@@ -1,16 +1,16 @@
 export interface PatientDTO {
-    patientId: number;
-    name: string;
-    surname: string;
-    pesel: string;
-    birthDate: string;
-    gender: string;
-    phone: string;
-    email: string;
-    street: string;
-    city: string;
-    houseNumber: string;
-    postalCode: string;
+    patientId?: number;
+    name?: string;
+    surname?: string;
+    pesel?: string;
+    birthDate?: string;
+    gender?: string;
+    phone?: string;
+    email?: string;
+    street?: string;
+    city?: string;
+    houseNumber?: string;
+    postalCode?: string;
 }
 
 export const patientFieldLabels: { [key in keyof PatientDTO]: string } = {
@@ -28,4 +28,8 @@ export const patientFieldLabels: { [key in keyof PatientDTO]: string } = {
     postalCode: "Kod pocztowy",
 };
 
-export const dtoFields: (keyof PatientDTO)[] = ["name", "surname", "birthDate"];
+export const dtoFields: (keyof PatientDTO)[] = ["name",
+    "surname",
+    "birthDate",
+"pesel",
+"phone"];

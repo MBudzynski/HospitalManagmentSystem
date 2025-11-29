@@ -16,8 +16,8 @@ export const Sidebar = ({name}: SidebarProps) => {
 
     const menuItems = [
         {icon: <Home size={18}/>, label: "Oddziały", path: "/department"},
-        {icon: <User size={18}/>, label: "Pacjenci", path: "/patient"},
-        {icon: <IdCardLanyard size={18}/>, label: "Personel", path: "/staff"},
+        {icon: <User size={18}/>, label: "Pacjenci", path: "/patients"},
+        {icon: <IdCardLanyard size={18}/>, label: "Personel", path: "/staffs"},
         {icon: <Folder size={18}/>, label: "Historia leczenia", path: "/history"},
         {icon: <File size={18}/>, label: "Dokumenty", path: "/documents"},
         {icon: <LogOut size={18}/>, label: "Sign out", path: "/logout"},

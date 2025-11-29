@@ -7,6 +7,7 @@ interface TableProps<T> {
     columnLabels?: { [key in keyof T]: string };
     onView?: (item: T) => void;
     onDelete?: (item: T) => void;
+    onAdd?: (item: T) => void;
 }
 
 export const DataTable = <T extends object>({
@@ -15,6 +16,7 @@ export const DataTable = <T extends object>({
                                                 columnLabels,
                                                 onView,
                                                 onDelete,
+                                                onAdd,
                                             }: TableProps<T>) => {
     return (
         <Table striped bordered hover responsive>
@@ -25,7 +27,7 @@ export const DataTable = <T extends object>({
                         {columnLabels ? columnLabels[col] : String(col).toUpperCase()}
                     </th>
                 ))}
-                {(onView || onDelete) && <th>Akcje</th>}
+                {(onView || onDelete || onAdd) && <th>Akcje</th>}
             </tr>
             </thead>
             <tbody>
@@ -34,7 +36,7 @@ export const DataTable = <T extends object>({
                     {columns.map((col) => (
                         <td key={String(col)}>{String(item[col])}</td>
                     ))}
-                    {(onView || onDelete) && (
+                    {(onView || onDelete || onAdd) && (
                         <td>
                             {onView && (
                                 <Button
@@ -53,6 +55,15 @@ export const DataTable = <T extends object>({
                                     onClick={() => onDelete(item)}
                                 >
                                     Usuń
+                                </Button>
+                            )}
+                            {onAdd && (
+                                <Button
+                                    variant="success"
+                                    size="sm"
+                                    onClick={() => onAdd(item)}
+                                >
+                                    Dodaj
                                 </Button>
                             )}
                         </td>
