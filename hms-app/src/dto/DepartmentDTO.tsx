@@ -1,3 +1,6 @@
+import type {RoomDTO} from "./RoomDTO.tsx";
+import type {StaffDTO} from "./StaffDTO.tsx";
+
 export interface DepartmentDTO {
     departmentId?: number;
     departmentName?: string;
@@ -7,6 +10,8 @@ export interface DepartmentDTO {
     staffsPhoneNumber?: string;
     nursesPhoneNumber?: string;
     headPhoneNumber?: string;
+    rooms: RoomDTO[];
+    staffs: StaffDTO[];
 }
 
 export const departmentFieldLabels: { [key in keyof DepartmentDTO]: string } = {
@@ -18,4 +23,8 @@ export const departmentFieldLabels: { [key in keyof DepartmentDTO]: string } = {
     staffsPhoneNumber: "Telefon personelu",
     nursesPhoneNumber: "Telefon pielęgniarek",
     headPhoneNumber: "Telefon kierownika",
+    rooms: "Sale",
+    staffs: "Personel",
 };
+
+export const dtoFields: (keyof DepartmentDTO)[] = ["departmentCode", "departmentName", "headOfDepartment"];

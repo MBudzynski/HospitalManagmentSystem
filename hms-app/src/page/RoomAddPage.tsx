@@ -13,47 +13,22 @@ export const DepartmentAddPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const { room, departmentName = "Dodaj" } = location.state as {
+        room: RoomDTO;
+        departmentName: string;
+    };
 
-    const room = location.state as RoomDTO | undefined;
+    const patients: PatientDTO[] = room?.hospitalizations?.map(h => h.patient)
+        .filter((p): p is PatientDTO => p !== undefined) ?? [];
+
     const isEdit = !!room;
 
     const [form, setForm] = useState<RoomDTO>({
         roomId: room?.roomId ?? undefined,
         number: room?.number ?? undefined,
-        flat: room?.flat ?? undefined,
-        bedNumber: room?.bedNumber ?? undefined,
+        floor: room?.floor ?? undefined,
+        bedNumber: room?.bedNumber ?? undefined
     });
-
-    const patients: PatientDTO[] = [
-        {
-            patientId: 1,
-            name: "Jan",
-            surname: "Kowalski",
-            gender: "Mężczyzna",
-            phone: "123-456-789",
-            email: "jan.kowalski@example.com",
-            street: "ul. Słoneczna",
-            city: "Warszawa",
-            houseNumber: "12A",
-            postalCode: "00-123",
-            pesel: "90051212345",
-            birthDate: "1990-05-12",
-        },
-        {
-            patientId: 2,
-            name: "Anna",
-            surname: "Nowak",
-            gender: "Kobieta",
-            phone: "987-654-321",
-            email: "anna.nowak@example.com",
-            street: "ul. Kwiatowa",
-            city: "Kraków",
-            houseNumber: "5B",
-            postalCode: "31-456",
-            pesel: "85010154321",
-            birthDate: "1985-01-01",
-        }
-    ];
 
     const handleSubmit = () => {
         if (isEdit) {
@@ -67,7 +42,8 @@ export const DepartmentAddPage = () => {
 
     return (
         <div  style={{height: "100%"}}>
-            <Sidebar name={isEdit ? "Oddział / hoooh":  "Oddział / Dodaj / Sala"}/>
+            departmentName
+            <Sidebar name={"Oddział / "  + departmentName + " / Sala " + (room?.number ?? "")}/>
 
             <div className={"department-details-page"} style={{marginTop: "2%"}}>
                 <Container fluid className="mt-4" style={{maxWidth: "1200px"}}>
@@ -93,7 +69,7 @@ export const DepartmentAddPage = () => {
                         <h4 className="mb-3">Pacjenci w sali</h4>
 
                         {patients.length > 0 ? (
-                            <DataTable
+                            <DataTable<PatientDTO>
                                 data={patients}
                                 columns={["name", "surname", "pesel", "birthDate"]}
                                 columnLabels={patientFieldLabels}
@@ -101,7 +77,7 @@ export const DepartmentAddPage = () => {
                                 onDelete={undefined}
                             />
                         ) : (
-                            <p style={{ color: "#888", fontStyle: "italic" }}>Brak pacjentów</p>
+                            <p style={{ textAlign: "center" }}>Brak hospitalizowanych pacjentów</p>
                         )}
                     </div>
 
@@ -110,7 +86,7 @@ export const DepartmentAddPage = () => {
                             Wróć
                         </Button>
                         <Button variant="success" onClick={handleSubmit}>
-                            {isEdit ? "Zapisz zmiany" : "Dodaj pokój"}
+                            {isEdit ? "Zapisz zmiany" : "Dodaj sale"}
                         </Button>
                     </div>
                 </Container>

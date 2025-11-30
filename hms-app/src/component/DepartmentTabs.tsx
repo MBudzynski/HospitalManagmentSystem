@@ -1,91 +1,44 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import {type RoomDTO, roomFieldLabels} from "../dto/RoomDTO";
 import {type StaffDTO, staffFieldLabels} from "../dto/StaffDTO";
 import {DataTable} from "./DataTabel.tsx";
 import {useNavigate} from "react-router-dom";
+import type {DepartmentDTO} from "../dto/DepartmentDTO.tsx";
+import {removeStaffFromDepartment} from "../service/StaffService.ts";
 
-export const DepartmentTabs = () => {
+type DepartmentTabsProps = {
+    department?: DepartmentDTO;
+};
+
+export const DepartmentTabs = ({ department }: DepartmentTabsProps) => {
+
+
+    const navigate = useNavigate();
 
     const [activeTab, setActiveTab] = useState<"rooms" | "staff">("rooms");
-    const navigate = useNavigate();
-    const dtoFields: (keyof RoomDTO)[] = ["number", "flat", "bedNumber"];
+    const dtoFields: (keyof RoomDTO)[] = ["number", "floor", "bedNumber"];
+    const staffColumns: (keyof StaffDTO)[] = ["name", "surname", "specialization", "peselNumber"];
+    const [rooms, setRooms] = useState<RoomDTO[]>(department?.rooms ?? []);
+    const [staffs, setStaffs] = useState<StaffDTO[]>(department?.staffs ?? []);
 
-    const rooms: RoomDTO[] = [
-        {
-            roomId: 1,
-            number: "101",
-            flat: 1,
-            bedNumber: 2
-        },
-        {
-            roomId: 2,
-            number: "102",
-            flat: 1,
-            bedNumber: 1
-        },
-        {
-            roomId: 3,
-            number: "201",
-            flat: 2,
-            bedNumber: 3
-        },
-        {
-            roomId: 4,
-            number: "202",
-            flat: 2,
-            bedNumber: 2
-        },
-        {
-            roomId: 5,
-            number: "301",
-            flat: 3,
-            bedNumber: 1
-        },
-        {
-            roomId: 6,
-            number: "302",
-            flat: 3,
-            bedNumber: 2
-        },
-        {
-            roomId: 7,
-            number: "303",
-            flat: 3,
-            bedNumber: 3
-        },
-        {
-            roomId: 8,
-            number: "304",
-            flat: 3,
-            bedNumber: 1
-        }
-    ];
-
-    const staff: StaffDTO[] = [
-        {
-            staffId: 1,
-            name: "Jan",
-            surname: "Kowalski",
-            specialization: "Pielęgniarz",
-            peselNumber: "90010112345"
-        },
-        {
-            staffId: 2,
-            name: "Anna",
-            surname: "Nowak",
-            specialization: "Lekarz",
-            peselNumber: "82050598765"
-        }
-    ];
+    useEffect(() => {
+        setRooms(department?.rooms ?? []);
+        setStaffs(department?.staffs ?? []);
+    }, [department]);
 
     const handleDelete = () => {
         alert(`Usuwanie działu:`);
     };
 
     const handleViewRoom = (room: RoomDTO) => {
-        navigate("/department/details/rooms", { state: room });
+        navigate("/department/details/rooms", {
+            state: {
+                room,
+                departmentName: department?.departmentName
+            }
+        });
     };
 
     const handleAddRoom = () => {
@@ -93,16 +46,29 @@ export const DepartmentTabs = () => {
     };
 
     const handlAsignStaff = () => {
-        navigate("/department/details/staffs/add");
+        navigate("/department/details/staffs/add", {
+                state: {
+                    departmentId: department?.departmentId,
+                    departmentName: department?.departmentName
+                }
+            });
     };
 
-    const handlRemoveStaff = () => {
-        alert(`Usuwanie pracownika z działu:`);
+    const handlRemoveStaff = async (staff: StaffDTO) => {
+        if (!staff.staffId) return;
+        try {
+            await removeStaffFromDepartment(staff.staffId);
+            setStaffs(prev => prev.filter(x => x.staffId !== staff.staffId));
+        } catch (error) {
+            console.error(error);
+            alert("Nie udało się usunąć pracownika.");
+        }
     };
 
     return (
         <>
-            <Nav variant="tabs" activeKey={activeTab} onSelect={(key: string| null) => setActiveTab((key as "rooms" | "staff")?? "rooms")}>
+            <Nav variant="tabs" activeKey={activeTab}
+                 onSelect={(key: string | null) => setActiveTab((key as "rooms" | "staff") ?? "rooms")}>
                 <Nav.Item>
                     <Nav.Link eventKey="rooms">Sale</Nav.Link>
                 </Nav.Item>
@@ -111,12 +77,19 @@ export const DepartmentTabs = () => {
                 </Nav.Item>
             </Nav>
 
-            <div className="d-flex justify-content-end mb-3 mt-3">
-                {activeTab === "rooms" && (<Button variant="success" onClick={handleAddRoom} style={{marginRight: "20vh", marginTop: "5vh"}}>Dodaj salę</Button>)}
-                {activeTab === "staff" && (<Button variant="success" onClick={handlAsignStaff} style={{marginRight: "20vh", marginTop: "5vh"}}>Przypisz pracownika</Button>)}
+            <h4 className="mb-3 mt-3">{activeTab === "rooms" ? "Sale oddziału:" : "Perosnel oddziału:"}</h4>
+
+            <div className="d-flex justify-content-end mb-3 mt-1">
+                {activeTab === "rooms" && (
+                    <Button variant="success" onClick={handleAddRoom} style={{marginRight: "20vh", marginTop: "5vh"}}>Dodaj
+                        salę</Button>)}
+                {activeTab === "staff" && (
+                    <Button variant="success" onClick={handlAsignStaff} style={{marginRight: "20vh", marginTop: "5vh"}}>Przypisz
+                        pracownika</Button>)}
             </div>
 
             <div style={{maxWidth: "80%", margin: "0 auto", maxHeight: "45vh", overflowY: "auto"}}>
+
                 {activeTab === "rooms" && (
                     <DataTable<RoomDTO>
                         data={rooms}
@@ -129,8 +102,8 @@ export const DepartmentTabs = () => {
 
                 {activeTab === "staff" && (
                     <DataTable<StaffDTO>
-                        data={staff}
-                        columns={["name", "surname", "specialization", "peselNumber"]}
+                        data={staffs}
+                        columns={staffColumns}
                         columnLabels={staffFieldLabels}
                         onDelete={handlRemoveStaff}
                     />

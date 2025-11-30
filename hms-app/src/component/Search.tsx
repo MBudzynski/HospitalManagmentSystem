@@ -19,6 +19,7 @@ export const DtoSearch = <T extends object>({
     const handleReset = () => {
         setSearchText("");
         setSelectedField(dtoFields[0]);
+        onSearch(selectedField, "");
     };
 
     return (

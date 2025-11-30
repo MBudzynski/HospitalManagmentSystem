@@ -1,85 +1,86 @@
-
 import './css/DepartmentAddPage.css'
 import {useLocation, useNavigate} from "react-router-dom";
 import {Button} from "react-bootstrap";
-import {type DepartmentDTO} from "../dto/DepartmentDTO.tsx";
 import {DataTable} from "../component/DataTabel.tsx";
-import {formStaffFields, type StaffDTO, staffFieldLabels, tableStaffFields} from "../dto/StaffDTO.tsx";
+import {type StaffDTO, staffFieldLabels, tableStaffFields} from "../dto/StaffDTO.tsx";
 import {DtoSearch} from "../component/Search.tsx";
-import {Sidebar} from "lucide-react";
+import Sidebar from "../component/Sidebar.tsx";
+import {useEffect, useState} from "react";
+import {assignStaffToDepartment, searchUnassignStaff} from "../service/StaffService.ts";
+import {
+    searchStaffFieldLabels,
+    searchStaffFields,
+    type StaffSearchCriteria
+} from "../dto/search/StaffSerachCriteria.tsx";
 
 export const DepartmentAddPage = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-    const dept = location.state as DepartmentDTO | undefined;
 
-    const handleSearch = () => {
-        alert(`Wyszukuje nie przypisanych pracownikó:`);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [staffs, setStaffs] = useState<StaffDTO[]>([]);
+    const { departmentName = "", departmentId } = location.state as {
+        departmentId: number;
+        departmentName: string;
     };
 
-    const staffs: StaffDTO[] = [
-        {
-            staffId: 1,
-            name: "Adam",
-            surname: "Majewski",
-            peselNumber: "80010112345",
-            title: "dr n. med.",
-            specialization: "Kardiolog",
-            phoneNumber: "600-111-222",
-            email: "adam.majewski@szpital.pl",
-            professionalLicenseNumber: "1234567"
-        },
-        {
-            staffId: 2,
-            name: "Ewelina",
-            surname: "Rybicka",
-            peselNumber: "90031254321",
-            title: "lek.",
-            specialization: "Neurolog",
-            phoneNumber: "600-333-444",
-            email: "ewelina.rybicka@szpital.pl",
-            professionalLicenseNumber: "7654321"
-        },
-        {
-            staffId: 3,
-            name: "Marek",
-            surname: "Stępień",
-            peselNumber: "85052298765",
-            title: "dr hab. n. med.",
-            specialization: "Chirurg ogólny",
-            phoneNumber: "600-555-666",
-            email: "marek.stepien@szpital.pl",
-            professionalLicenseNumber: "1122334"
-        },
-        {
-            staffId: 4,
-            name: "Karolina",
-            surname: "Bielska",
-            peselNumber: "92081176543",
-            title: "lek.",
-            specialization: "Pediatra",
-            phoneNumber: "600-777-888",
-            email: "karolina.bielska@szpital.pl",
-            professionalLicenseNumber: "4433221"
+    const handleSearch = (field: keyof StaffSearchCriteria, value: string) => {
+
+        searchUnassignStaff(field, value)
+            .then((data) => setStaffs(data))
+            .catch((error) => {
+                console.error(error);
+                alert("Nie udało się wyszukać personelu.");
+            });
+    };
+
+    useEffect(() => {
+        const fetchStaffs = async () => {
+            try {
+                const data = await searchUnassignStaff();
+                setStaffs(data);
+            } catch (error) {
+                console.error(error);
+                alert("Nie udało się pobrać personelu.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStaffs();
+    }, []);
+
+    const handleBack = () => {
+        navigate("/department/details", {
+            state: { departmentId: departmentId }
+        });
+    };
+
+    const handleAdd = async (staff: StaffDTO) => {
+        if (!staff.staffId) return;
+
+        try {
+            await assignStaffToDepartment(staff.staffId, departmentId);
+            const updated = await searchUnassignStaff();
+            setStaffs(updated);
+        } catch (error) {
+            console.error(error);
+            alert("Nie udało się przypisać pracownika.");
         }
-    ];
-
-    const handleBack = () => navigate(-1);
-
-    const handleAdd = () => {
-        alert(`Przypisuje lekarza do oddziału:`);
     };
 
     return (
         <div style={{height: "100%"}}>
-            <Sidebar name={"Oddział / Dodaj / Lekarza"}/>
+            <Sidebar name={"Oddział / " + departmentName + " / Personel / Dodaj"}/>
 
             <div className={"department-details-page"} style={{marginTop: "2%"}}>
 
                 <div style={{alignContent: "center", marginLeft: "30vh", marginTop: "4%", height: "100%"}}>
-                    <DtoSearch<StaffDTO> dtoFields={formStaffFields} fieldLabels={staffFieldLabels}
-                                              onSearch={handleSearch}/>
+                    <DtoSearch<StaffSearchCriteria>
+                        dtoFields={searchStaffFields}
+                        fieldLabels={searchStaffFieldLabels}
+                        onSearch={handleSearch}
+                    />
                 </div>
 
                 <div className="mt-4 mb-4 p-3" style={{
@@ -87,13 +88,22 @@ export const DepartmentAddPage = () => {
                     borderRadius: "10px",
                     backgroundColor: "white"
                 }}>
+                    <h4 className="mb-3">Perosnel bez przypisanego oddziału:</h4>
 
-                    <DataTable<StaffDTO>
-                        data={staffs}
-                        columns={tableStaffFields}
-                        columnLabels={staffFieldLabels}
-                        onAdd={handleAdd}
-                    />
+                    {!loading ? (
+                        staffs.length > 0 ? (
+                            <DataTable<StaffDTO>
+                                data={staffs}
+                                columns={tableStaffFields}
+                                columnLabels={staffFieldLabels}
+                                onAdd={handleAdd}
+                            />
+                        ) : (
+                            <p>Nie odnaleziono pasujących wyników.</p>
+                        )
+                    ) : (
+                        <p>Ładowanie danych...</p>
+                    )}
                 </div>
 
                 <div className="d-flex justify-content-end gap-3 mb-4 me-2">
