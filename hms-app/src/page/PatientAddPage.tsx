@@ -5,6 +5,7 @@ import {useState} from "react";
 import {Form, Button, Container} from "react-bootstrap";
 import {type PatientDTO, patientFieldLabels} from "../dto/PatientDTO.tsx";
 import {FormFields} from "../component/FormFields.tsx";
+import {savePatient} from "../service/PatientService.ts";
 
 export const PatientAddPage = () => {
     const location = useLocation();
@@ -28,17 +29,13 @@ export const PatientAddPage = () => {
 
     const isEdit = !!patient;
 
-    const handleSubmit = () => {
-        if (isEdit) {
-            console.log("Zapisuję edycję pacjenta:", form);
-        } else {
-            console.log("Dodaję nowego pacjenta:", form);
-        }
+    const handleSubmit = async () => {
+        await savePatient(form);
+        navigate("/patients");
     };
 
     const handleBack = () => navigate(-1);
 
-    // pola formularza do wyświetlenia
     const formFields: (keyof PatientDTO)[] = [
         "name",
         "surname",

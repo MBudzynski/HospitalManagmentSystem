@@ -1,4 +1,3 @@
-
 export interface StaffSearchCriteria {
     name?: string;
     surname?: string;

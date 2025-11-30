@@ -4,14 +4,16 @@ import com.example.hmscore.dto.StaffDTO;
 import com.example.hmscore.repository.medical_history.MedicalHistoryEntity;
 import com.example.hmscore.repository.department.DepartmentEntity;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "staff")
 public class StaffEntity {
@@ -49,6 +51,21 @@ public class StaffEntity {
                 .professionalLicenseNumber(professionalLicenseNumber)
                 .medicalHistory(configuration.isWithMedicalHistories() ? medicalHistories.stream().map(MedicalHistoryEntity::toDTO).toList() : null)
                 .department(configuration.isWithDepartments() && department != null ? department.toDTO() : null)
+                .build();
+    }
+
+    public static StaffEntity toEntity(StaffDTO dto) {
+        return StaffEntity
+                .builder()
+                .staffId(dto.getStaffId())
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .peselNumber(dto.getPeselNumber())
+                .title(dto.getTitle())
+                .specialization(dto.getSpecialization())
+                .phoneNumber(dto.getPhoneNumber())
+                .email(dto.getEmail())
+                .professionalLicenseNumber(dto.getProfessionalLicenseNumber())
                 .build();
     }
 }

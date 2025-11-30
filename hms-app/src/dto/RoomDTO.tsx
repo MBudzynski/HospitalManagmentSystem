@@ -1,4 +1,5 @@
 import type {PatientHospitalizationDTO} from "./PatientHospitalizationDTO.tsx";
+import type {DepartmentDTO} from "./DepartmentDTO.tsx";
 
 export interface RoomDTO {
     roomId?: number;
@@ -6,6 +7,7 @@ export interface RoomDTO {
     floor?: number;
     bedNumber?: number;
     hospitalizations?: PatientHospitalizationDTO[];
+    department?: Partial<DepartmentDTO>;
 }
 
 export const roomFieldLabels: { [key in keyof RoomDTO]: string } = {

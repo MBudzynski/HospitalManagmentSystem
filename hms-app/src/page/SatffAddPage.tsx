@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { type StaffDTO, staffFieldLabels, formStaffFields } from "../dto/StaffDTO.tsx";
 import { FormFields } from "../component/FormFields.tsx";
+import {addStaff} from "../service/StaffService.ts";
 
 export const StaffAddPage = () => {
     const location = useLocation();
@@ -26,11 +27,13 @@ export const StaffAddPage = () => {
 
     const isEdit = !!staff;
 
-    const handleSubmit = () => {
-        if (isEdit) {
-            console.log("Zapisuję edycję:", form);
-        } else {
-            console.log("Dodaję nowego pracownika:", form);
+    const handleSubmit = async () => {
+        try {
+            await addStaff(form);
+            navigate("/staffs")
+        } catch (error) {
+            console.error(error);
+            alert("Nie udało się zapisać danych personelu");
         }
     };
 

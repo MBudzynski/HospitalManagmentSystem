@@ -7,6 +7,7 @@ import {DataTable} from "./DataTabel.tsx";
 import {useNavigate} from "react-router-dom";
 import type {DepartmentDTO} from "../dto/DepartmentDTO.tsx";
 import {removeStaffFromDepartment} from "../service/StaffService.ts";
+import {deleteRoom} from "../service/RoomService.ts";
 
 type DepartmentTabsProps = {
     department?: DepartmentDTO;
@@ -28,21 +29,34 @@ export const DepartmentTabs = ({ department }: DepartmentTabsProps) => {
         setStaffs(department?.staffs ?? []);
     }, [department]);
 
-    const handleDelete = () => {
-        alert(`Usuwanie działu:`);
+    const handleRoomDelete = async (room: RoomDTO) => {
+        if (!room.roomId) return;
+        try {
+            await deleteRoom(room.roomId);
+            setRooms(prev => prev.filter(x => x.roomId !== room.roomId));
+        } catch (error) {
+            console.error(error);
+            alert("Nie udało się usunąć sali. W sali nadal są hospitalizowani pacjenci");
+        }
     };
 
     const handleViewRoom = (room: RoomDTO) => {
         navigate("/department/details/rooms", {
             state: {
                 room,
+                departmentId: department?.departmentId,
                 departmentName: department?.departmentName
             }
         });
     };
 
     const handleAddRoom = () => {
-        navigate("/department/details/rooms");
+        navigate("/department/details/rooms", {
+                state: {
+                    departmentId: department?.departmentId,
+                    departmentName: department?.departmentName
+                }
+            });
     };
 
     const handlAsignStaff = () => {
@@ -95,7 +109,7 @@ export const DepartmentTabs = ({ department }: DepartmentTabsProps) => {
                         data={rooms}
                         columns={dtoFields}
                         columnLabels={roomFieldLabels}
-                        onDelete={handleDelete}
+                        onDelete={handleRoomDelete}
                         onView={handleViewRoom}
                     />
                 )}

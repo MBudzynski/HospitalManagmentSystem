@@ -5,13 +5,19 @@ import com.example.hmscore.repository.patient.PatientHospitalizationConfiguratio
 import com.example.hmscore.repository.patient.PatientHospitalizationEntity;
 import com.example.hmscore.repository.department.DepartmentEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "room")
 public class RoomEntity {
 
@@ -48,6 +54,20 @@ public class RoomEntity {
                 .bedNumber(bedNumber)
                 .department(configuration.isWithDepartments() ? department.toDTO() : null)
                 .hospitalizations(configuration.isWithPatientHospitalizations() ? patientHospitalizations.stream().map(x -> x.toDTO(patientHospitalizationConfiguration)).toList() : null)
+                .build();
+    }
+
+    public static RoomEntity fromDTO(RoomDTO dto) {
+        return RoomEntity
+                .builder()
+                .roomId(dto.getRoomId())
+                .number(dto.getNumber())
+                .floor(dto.getFloor())
+                .bedNumber(dto.getBedNumber())
+                .department(DepartmentEntity
+                        .builder()
+                        .departmentId(dto.getDepartment().getDepartmentId())
+                        .build())
                 .build();
     }
 }

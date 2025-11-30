@@ -2,6 +2,9 @@ package com.example.hmscore.repository.patient;
 
 import com.example.hmscore.dto.PatientDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -9,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "patient")
 public class PatientEntity {
@@ -47,6 +53,24 @@ public class PatientEntity {
                 .city(city)
                 .houseNumber(houseNumber)
                 .postalCode(postalCode)
+                .build();
+    }
+
+    public static PatientEntity toEntity(PatientDTO dto) {
+        return PatientEntity
+                .builder()
+                .patientId(dto.getPatientId())
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .pesel(dto.getPesel())
+                .birthDate(dto.getBirthDate())
+                .gender(dto.getGender())
+                .phone(dto.getPhone())
+                .email(dto.getEmail())
+                .street(dto.getStreet())
+                .city(dto.getCity())
+                .houseNumber(dto.getHouseNumber())
+                .postalCode(dto.getPostalCode())
                 .build();
     }
 }

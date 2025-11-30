@@ -5,23 +5,54 @@ import {DtoSearch} from "../component/Search.tsx";
 import Button from "react-bootstrap/Button";
 import {DataTable} from "../component/DataTabel.tsx";
 import Sidebar from "../component/Sidebar.tsx";
+import {useEffect, useState} from "react";
+import {deletePatient, getAllPatients, searchPatient} from "../service/PatientService.ts";
+import {
+    type PatientSearchCriteria,
+    searchPatientFieldLabels,
+    searchPatientFields
+} from "../dto/search/PatientSearchCriteria.tsx";
 
 export const PatientManagePage = () => {
 
     const navigate = useNavigate();
 
-    const patients: PatientDTO[] = [
-        {patientId: 1, name: "Jan", surname: "Kowalski", birthDate: "1980-05-12", pesel: "80051212345"},
-        {patientId: 2, name: "Anna", surname: "Nowak", birthDate: "1990-08-21", pesel: "90082154321"},
-        {patientId: 3, name: "Piotr", surname: "Wiśniewski", birthDate: "1975-03-10", pesel: "75031098765"},
-    ];
+    const [patients, setPatients] = useState<PatientDTO[]>([]);
 
-    const handleSearch = async (field: keyof PatientDTO, value: string) => {
-        alert(`Szukanie po polu: ${field} | value: ${value}`);
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const data = await getAllPatients();
+                if (data) {
+                    setPatients(data);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Nie udało się pobrać danych perosnelu.");
+            }
+        };
+
+        fetchPatients();
+    }, []);
+
+    const handleSearch = async (field: keyof PatientSearchCriteria, value: string) => {
+        searchPatient(field, value)
+            .then((data) => setPatients(data))
+            .catch((error) => {
+                console.error(error);
+                alert("Nie udało się wyszukać pacjentów.");
+            });
     };
 
-    const handleDelete = (patient: PatientDTO) => {
-        alert(`Usuwanie pacjenta: ${patient.name} ${patient.surname}`);
+    const handleDelete = async (patient: PatientDTO) => {
+        if(!patient.patientId) return;
+        try {
+            deletePatient(patient.patientId);
+            setPatients(prev => prev.filter(x => x.patientId !== patient.patientId))
+        } catch (error) {
+            console.error(error);
+            alert("Nie udało się usunąć pacjenta.");
+        }
     };
 
     const handleView = (patient: PatientDTO) => {
@@ -39,8 +70,9 @@ export const PatientManagePage = () => {
 
             <div className="department-page">
                 <div style={{alignContent: "center", marginLeft: "30vh", marginTop: "4%", height: "100%"}}>
-                    <DtoSearch<PatientDTO> dtoFields={dtoFields} fieldLabels={patientFieldLabels}
-                                           onSearch={handleSearch}/>
+                    <DtoSearch<PatientSearchCriteria> dtoFields={searchPatientFields}
+                                                      fieldLabels={searchPatientFieldLabels}
+                                                      onSearch={handleSearch}/>
                 </div>
 
                 <div className="d-flex justify-content-end mb-3">

@@ -54,7 +54,7 @@ export const DepartmentAddPage = () => {
         }
     };
 
-    const handleBack = () => navigate(-1);
+    const handleBack = () => navigate("/department");
 
     return (
         <div style={{height: "100%"}}>
