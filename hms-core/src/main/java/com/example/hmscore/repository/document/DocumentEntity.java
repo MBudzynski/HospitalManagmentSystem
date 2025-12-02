@@ -1,5 +1,6 @@
 package com.example.hmscore.repository.document;
 
+import com.example.hmscore.dto.DocumentDTO;
 import com.example.hmscore.repository.drug.HospitalizationDocumentEntity;
 import com.example.hmscore.repository.medical_history.MedicalHistoryEntity;
 import jakarta.persistence.*;
@@ -27,4 +28,14 @@ public class DocumentEntity {
     @ManyToOne
     @JoinColumn(name = "hospitalization_document_id")
     private HospitalizationDocumentEntity hospitalizationDocument;
+
+    public DocumentDTO toDTO() {
+        return DocumentDTO
+                .builder()
+                .documentId(documentId)
+                .userLogin(userLogin)
+                .addDateTime(addDateTime)
+                .path(path)
+                .build();
+    }
 }

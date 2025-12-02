@@ -8,6 +8,7 @@ interface TableProps<T> {
     onView?: (item: T) => void;
     onDelete?: (item: T) => void;
     onAdd?: (item: T) => void;
+    onFinish?: (item: T) => void;
 }
 
 export const DataTable = <T extends object>({
@@ -17,6 +18,7 @@ export const DataTable = <T extends object>({
                                                 onView,
                                                 onDelete,
                                                 onAdd,
+                                                onFinish,
                                             }: TableProps<T>) => {
     return (
         <Table striped bordered hover responsive>
@@ -27,7 +29,7 @@ export const DataTable = <T extends object>({
                         {columnLabels ? columnLabels[col] : String(col).toUpperCase()}
                     </th>
                 ))}
-                {(onView || onDelete || onAdd) && <th>Akcje</th>}
+                {(onView || onDelete || onAdd || onFinish) && <th>Akcje</th>}
             </tr>
             </thead>
             <tbody>
@@ -36,7 +38,7 @@ export const DataTable = <T extends object>({
                     {columns.map((col) => (
                         <td key={String(col)}>{String(item[col])}</td>
                     ))}
-                    {(onView || onDelete || onAdd) && (
+                    {(onView || onDelete || onAdd || onFinish) && (
                         <td>
                             {onView && (
                                 <Button
@@ -64,6 +66,15 @@ export const DataTable = <T extends object>({
                                     onClick={() => onAdd(item)}
                                 >
                                     Dodaj
+                                </Button>
+                            )}
+                            {onFinish && (
+                                <Button
+                                    variant="success"
+                                    size="sm"
+                                    onClick={() => onFinish(item)}
+                                >
+                                    Zakończ
                                 </Button>
                             )}
                         </td>

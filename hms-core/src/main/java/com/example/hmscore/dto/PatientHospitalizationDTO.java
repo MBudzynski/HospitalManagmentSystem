@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,4 +18,8 @@ public class PatientHospitalizationDTO {
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private PatientDTO patient;
+    private RoomDTO room;
+    private List<HospitalizationDrugDTO> hospitalizationDrugs;
+    private List<MedicalHistoryDTO> medicalHistories;
+    private List<HospitalizationDocumentDTO> hospitalizationDocuments;
 }

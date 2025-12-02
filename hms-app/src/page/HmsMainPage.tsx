@@ -7,7 +7,7 @@ export const HmsMainPage = () => {
         <div
             style={{
                 width: "100hv",
-                height: "100vh",
+                height: "95vh",
                 backgroundImage: `url(${logo})`,
                 backgroundSize: "100% 100%",
                 backgroundPosition: "center",

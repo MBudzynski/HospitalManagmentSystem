@@ -4,15 +4,20 @@ import com.example.hmscore.dto.PatientHospitalizationDTO;
 import com.example.hmscore.repository.drug.HospitalizationDocumentEntity;
 import com.example.hmscore.repository.drug.HospitalizationDrugEntity;
 import com.example.hmscore.repository.medical_history.MedicalHistoryEntity;
+import com.example.hmscore.repository.room.RoomConfiguration;
 import com.example.hmscore.repository.room.RoomEntity;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "patient_hospitalization")
 public class PatientHospitalizationEntity {
@@ -44,12 +49,21 @@ public class PatientHospitalizationEntity {
     private List<HospitalizationDocumentEntity> hospitalizationDocuments = new ArrayList<>();
 
     public PatientHospitalizationDTO toDTO(PatientHospitalizationConfiguration patientHospitalizationConfiguration) {
+        RoomConfiguration roomConfiguration = RoomConfiguration
+                .builder()
+                .withDepartments(true)
+                .build();
+
         return PatientHospitalizationDTO
                 .builder()
                 .patientHospitalizationId(patientHospitalizationId)
                 .dateFrom(dateFrom)
                 .dateTo(dateTo)
                 .patient(patientHospitalizationConfiguration.isWithPatient() ? patient.toDTO() : null)
+                .room(patientHospitalizationConfiguration.isWithRoom() ? room.toDTO(roomConfiguration) : null)
+                .hospitalizationDrugs(patientHospitalizationConfiguration.isWithHospitalizationDrugs() ? hospitalizationDrugs.stream().map(HospitalizationDrugEntity::toDTO).toList() : null)
+                .medicalHistories(patientHospitalizationConfiguration.isWithMedicalHistory() ? medicalHistory.stream().map(MedicalHistoryEntity::toDTO).toList() : null)
+                .hospitalizationDocuments(patientHospitalizationConfiguration.isWithHospitalizationDocuments() ? hospitalizationDocuments.stream().map(x-> x.toDTO()).toList() : null)
                 .build();
     }
 }

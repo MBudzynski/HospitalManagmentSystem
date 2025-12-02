@@ -31,5 +31,5 @@ export const patientFieldLabels: { [key in keyof PatientDTO]: string } = {
 export const dtoFields: (keyof PatientDTO)[] = ["name",
     "surname",
     "birthDate",
-"pesel",
-"phone"];
+    "pesel",
+    "phone"];

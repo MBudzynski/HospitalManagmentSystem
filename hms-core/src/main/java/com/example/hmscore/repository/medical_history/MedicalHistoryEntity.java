@@ -3,15 +3,20 @@ package com.example.hmscore.repository.medical_history;
 import com.example.hmscore.dto.MedicalHistoryDTO;
 import com.example.hmscore.repository.patient.PatientHospitalizationEntity;
 import com.example.hmscore.repository.document.DocumentEntity;
+import com.example.hmscore.repository.staff.StaffConfiguration;
 import com.example.hmscore.repository.staff.StaffEntity;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "medical_history")
 public class MedicalHistoryEntity {
@@ -37,6 +42,26 @@ public class MedicalHistoryEntity {
     private List<DocumentEntity> documents = new ArrayList<>();
 
     public MedicalHistoryDTO toDTO () {
-        return new MedicalHistoryDTO();
+        return MedicalHistoryDTO
+                .builder()
+                .medicalHistoryId(medicalHistoryId)
+                .staff(staff.toDTO(StaffConfiguration.builder().build()))
+                .creationDate(creationDate)
+                .description(description)
+                .build();
+    }
+
+    public static MedicalHistoryEntity toEntity (Long hospitalizationId, MedicalHistoryDTO dto) {
+        return MedicalHistoryEntity
+                .builder()
+                .patientHospitalization(PatientHospitalizationEntity
+                        .builder()
+                        .patientHospitalizationId(hospitalizationId)
+                        .build())
+                .medicalHistoryId(dto.getMedicalHistoryId())
+                .staff(dto.getStaff() == null ? null : StaffEntity.toEntity(dto.getStaff()))
+                .creationDate(dto.getCreationDate())
+                .description(dto.getDescription())
+                .build();
     }
 }

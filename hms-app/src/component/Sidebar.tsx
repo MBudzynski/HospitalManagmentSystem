@@ -1,4 +1,4 @@
-import {Home, LogOut, File, User, Folder, IdCardLanyard} from "lucide-react";
+import {Home, LogOut, User, Folder, IdCardLanyard, Pill, Building2} from "lucide-react";
 import './css/Sidebar.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -15,12 +15,13 @@ export const Sidebar = ({name}: SidebarProps) => {
     const location = useLocation();
 
     const menuItems = [
-        {icon: <Home size={18}/>, label: "Oddziały", path: "/department"},
+        {icon: <Home size={18}/>, label: "Home", path: "/home"},
+        {icon: <Building2 size={18}/>, label: "Oddziały", path: "/department"},
         {icon: <User size={18}/>, label: "Pacjenci", path: "/patients"},
         {icon: <IdCardLanyard size={18}/>, label: "Personel", path: "/staffs"},
-        {icon: <Folder size={18}/>, label: "Historia leczenia", path: "/history"},
-        {icon: <File size={18}/>, label: "Dokumenty", path: "/documents"},
-        {icon: <LogOut size={18}/>, label: "Sign out", path: "/logout"},
+        {icon: <Folder size={18}/>, label: "Hospitalizacja", path: "/hospitalisation"},
+        {icon: <Pill size={18}/>, label: "Leki", path: "/drug"},
+        {icon: <LogOut size={18}/>, label: "Sign out", path: "/"},
     ];
 
     return (

@@ -12,4 +12,8 @@ import lombok.NoArgsConstructor;
 public class PatientHospitalizationConfiguration {
 
     private boolean withPatient;
+    private boolean withRoom;
+    private boolean withHospitalizationDrugs;
+    private boolean withMedicalHistory;
+    private boolean withHospitalizationDocuments;
 }

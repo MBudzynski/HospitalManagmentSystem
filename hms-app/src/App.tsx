@@ -13,11 +13,18 @@ import DepartmentAssignStaffPage from "./page/DepartmentAssignStaffPage.tsx";
 import StaffManagePage from "./page/StaffManagePage.tsx";
 import SatffAddPage from "./page/SatffAddPage.tsx";
 import PatientAddPage from "./page/PatientAddPage.tsx";
+import LoginPage from "./page/LoginPage.tsx";
+import DrugManagePage from "./page/DrugManagePage.tsx";
+import DrugAddPage from "./page/DrugAddPage.tsx";
+import PatientHospitalizationPage from "./page/PatientHospitalizationPage.tsx";
+import PatientHospitalizationDetailsPage from "./page/PatientHospitalizationDetailsPage.tsx";
+import MedicalHistoryAddPage from "./page/MedicalHistoryAddPage.tsx";
+import HospitalizaionDrugAddPage from "./page/HospitalizaionDrugAddPage.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <HmsMainPage/>,
+        element: <LoginPage/>,
     },
     {
         path: "/department",
@@ -52,8 +59,36 @@ const router = createBrowserRouter([
         element: <PatientAddPage/>,
     },
     {
-        path: "/patient",
-        element: <PatientManagePage/>,
+        path: "/login",
+        element: <LoginPage/>,
+    },
+    {
+        path: "/home",
+        element: <HmsMainPage/>,
+    },
+    {
+        path: "/drug",
+        element: <DrugManagePage/>,
+    },
+    {
+        path: "/drug/details",
+        element: <DrugAddPage/>,
+    },
+    {
+        path: "/hospitalisation",
+        element: <PatientHospitalizationPage/>
+    },
+    {
+        path: "/hospitalization/details",
+        element: <PatientHospitalizationDetailsPage/>
+    },
+    {
+        path: "/hospitalization/details/medical-history/add",
+        element: <MedicalHistoryAddPage/>
+    },
+    {
+        path: "/hospitalization/details/drug/add",
+        element: <HospitalizaionDrugAddPage/>
     }
 ]);
 
